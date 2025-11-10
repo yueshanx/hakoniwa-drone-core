@@ -10,3 +10,9 @@
 [submodule "thirdparty/hakoniwa-core-cpp-client"]
 	path = thirdparty/hakoniwa-core-cpp-client
 	url = https://github.com/toppers/hakoniwa-core-cpp-client.git
+[submodule "hakoniwa-drone-core"]
+	path = hakoniwa-drone-core
+	url = https://github.com/toppers/hakoniwa-drone-core.git
+[submodule "hakoniwa-webserver"]
+	path = hakoniwa-webserver
+	url = https://github.com/toppers/hakoniwa-webserver.git

@@ -6,14 +6,19 @@
     "stderr": "logs/${asset}.err",
     "env": {
       "prepend": {
-        "lib_path": ["/usr/lib/x86_64-linux-gnu"],
-        "PATH": ["/usr/bin"],
+        "lib_path": [
+          "/usr/lib/x86_64-linux-gnu",
+          "/usr/local/lib/hakoniwa"
+        ],
+        "PATH": [
+          "/usr/bin"
+        ],
         "PYTHONPATH": [
-          "/home/tmori/hakoniwa/hakoniwa-drone-pro/drone_api",
-          "/home/tmori/hakoniwa/hakoniwa-drone-pro/drone_api/assets",
-          "/home/tmori/hakoniwa/hakoniwa-drone-pro/drone_api/assets/lib",
+          "/home/enpit/hakoniwa/hakoniwa-drone-core/drone_api",
+          "/home/enpit/hakoniwa/hakoniwa-drone-core/drone_api/assets",
+          "/home/enpit/hakoniwa/hakoniwa-drone-core/drone_api/assets/lib",
           "/usr/local/lib/python3.12/dist-packages",
-          "/home/tmori/.pyenv/versions/3.12.3/lib/python3.12/site-packages"
+          "/home/enpit/.pyenv/versions/3.12.0/lib/python3.12/site-packages"
         ]
       }
     },
@@ -25,38 +30,52 @@
       "name": "drone",
       "activation_timing": "before_start",
       "command": "lnx/linux-main_hako_drone_service",
-      "args": ["config/drone/api-1", "config/pdudef/webavatar.json"],
-      "cwd": "/home/tmori/hakoniwa/hakoniwa-drone-pro"
+      "args": [
+        "config/drone/api-1",
+        "config/pdudef/webavatar.json"
+      ],
+      "cwd": "/home/enpit/hakoniwa/hakoniwa-drone-core"
     },
     {
       "name": "environment",
       "activation_timing": "before_start",
       "command": "python",
-      "args": ["-m","hako_env_event","../config/pdudef/webavatar.json","20","assets/config"],
-      "cwd": "/home/tmori/hakoniwa/hakoniwa-drone-pro/drone_api"
+      "args": [
+        "-m",
+        "hako_env_event",
+        "../config/pdudef/webavatar.json",
+        "20",
+        "assets/config"
+      ],
+      "cwd": "/home/enpit/hakoniwa/hakoniwa-drone-core/drone_api"
     },
     {
       "name": "webserver",
       "activation_timing": "after_start",
       "command": "python",
-      "args": ["-m","server.main","--asset_name","WebServer",
-               "--config_path","/home/tmori/hakoniwa/hakoniwa-drone-pro/config/pdudef/webavatar.json",
-               "--delta_time_usec","20000"],
-      "cwd": "/home/tmori/hakoniwa/hakoniwa-drone-pro/../hakoniwa-webserver",
-      "depends_on": ["drone"]
-    },
-    {
-      "name": "Unity",
-      "activation_timing": "after_start",
-      "command": "simulation.exe",
-      "args": [],
-      "cwd": "/home/tmori/hakoniwa/hakoniwa-drone-pro/WebAvatar",
-      "depends_on": ["webserver"]
+      "args": [
+        "-m",
+        "server.main",
+        "--asset_name",
+        "WebServer",
+        "--config_path",
+        "/home/enpit/hakoniwa/hakoniwa-drone-core/config/pdudef/webavatar.json",
+        "--delta_time_usec",
+        "20000"
+      ],
+      "cwd": "/home/enpit/hakoniwa/hakoniwa-drone-core/../hakoniwa-webserver",
+      "depends_on": [
+        "drone"
+      ]
     }
   ],
   "notify": {
     "type": "exec",
     "command": "scripts/notify_on_fail.sh",
-    "args": ["${asset}","asset_exit","${timestamp}"]
+    "args": [
+      "${asset}",
+      "asset_exit",
+      "${timestamp}"
+    ]
   }
 }
